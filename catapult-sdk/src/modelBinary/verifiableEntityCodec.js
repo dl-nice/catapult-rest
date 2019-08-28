@@ -32,7 +32,7 @@ const verifiableEntityCodec = {
 	deserialize: parser => {
 		const entity = {};
 		entity.signature = parser.buffer(constants.sizes.signature);
-		entity.signerPublicKey = parser.buffer(constants.sizes.signerPublicKey);
+		entity.signer = parser.buffer(constants.sizes.signer);
 		entity.version = parser.uint16();
 		entity.type = parser.uint16();
 		return entity;
@@ -45,7 +45,7 @@ const verifiableEntityCodec = {
 	 */
 	serialize: (entity, serializer) => {
 		serializer.writeBuffer(entity.signature);
-		serializer.writeBuffer(entity.signerPublicKey);
+		serializer.writeBuffer(entity.signer);
 		serializer.writeUint16(entity.version);
 		serializer.writeUint16(entity.type);
 	}

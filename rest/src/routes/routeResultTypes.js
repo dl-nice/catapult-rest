@@ -25,7 +25,7 @@ module.exports = {
 	transaction: 'transactionWithMetadata',
 
 	// other
-	chainStatistic: 'chainStatistic',
+	chainInfo: 'chainInfo',
 	merkleProofInfo: 'merkleProofInfo',
 	receipts: 'receipts',
 	transactionStatus: 'transactionStatus',

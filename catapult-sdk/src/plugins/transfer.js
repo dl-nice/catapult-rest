@@ -32,7 +32,7 @@ const constants = { sizes };
 const transferPlugin = {
 	registerSchema: builder => {
 		builder.addTransactionSupport(EntityType.transfer, {
-			recipientAddress: ModelType.binary,
+			recipient: ModelType.binary,
 			message: { type: ModelType.object, schemaName: 'transfer.message' },
 			mosaics: { type: ModelType.array, schemaName: 'mosaic' }
 		});
@@ -45,7 +45,7 @@ const transferPlugin = {
 		codecBuilder.addTransactionSupport(EntityType.transfer, {
 			deserialize: parser => {
 				const transaction = {};
-				transaction.recipientAddress = parser.buffer(constants.sizes.addressDecoded);
+				transaction.recipient = parser.buffer(constants.sizes.addressDecoded);
 
 				const messageSize = parser.uint16();
 				const numMosaics = parser.uint8();
@@ -69,7 +69,7 @@ const transferPlugin = {
 			},
 
 			serialize: (transaction, serializer) => {
-				serializer.writeBuffer(transaction.recipientAddress);
+				serializer.writeBuffer(transaction.recipient);
 
 				let payloadSize = 0;
 				if (transaction.message) {

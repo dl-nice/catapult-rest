@@ -50,7 +50,7 @@ describe('transfer plugin', () => {
 
 			// - transfer
 			expect(Object.keys(modelSchema.transfer).length).to.equal(Object.keys(modelSchema.transaction).length + 3);
-			expect(modelSchema.transfer).to.contain.all.keys(['recipientAddress', 'message', 'mosaics']);
+			expect(modelSchema.transfer).to.contain.all.keys(['recipient', 'message', 'mosaics']);
 
 			// - message
 			expect(modelSchema['transfer.message']).to.deep.equal({
@@ -79,16 +79,16 @@ describe('transfer plugin', () => {
 		});
 
 		const generateTransaction = () => {
-			const RecipientAddress_Buffer = Buffer.from(test.random.bytes(test.constants.sizes.addressDecoded));
+			const Recipient_Buffer = Buffer.from(test.random.bytes(test.constants.sizes.addressDecoded));
 
 			return {
 				buffer: Buffer.concat([
-					RecipientAddress_Buffer,
+					Recipient_Buffer,
 					Buffer.of(0x00, 0x00, 0x00) // footer
 				]),
 
 				object: {
-					recipientAddress: RecipientAddress_Buffer
+					recipient: Recipient_Buffer
 				}
 			};
 		};

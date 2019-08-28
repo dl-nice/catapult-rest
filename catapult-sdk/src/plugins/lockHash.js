@@ -35,17 +35,15 @@ const lockHashPlugin = {
 			lock: { type: ModelType.object, schemaName: 'hashLockInfo.lock' }
 		});
 		builder.addSchema('hashLockInfo.lock', {
-			senderPublicKey: ModelType.binary,
-			senderAddress: ModelType.binary,
+			account: ModelType.binary,
+			accountAddress: ModelType.binary,
 			mosaicId: ModelType.uint64,
-			amount: ModelType.uint64,
-			endHeight: ModelType.uint64,
+			height: ModelType.uint64,
 			hash: ModelType.binary
 		});
 
 		builder.addTransactionSupport(EntityType.hashLock, {
-			mosaicId: ModelType.uint64,
-			amount: ModelType.uint64,
+			mosaic: ModelType.uint64,
 			duration: ModelType.uint64,
 			hash: ModelType.binary
 		});
@@ -55,16 +53,14 @@ const lockHashPlugin = {
 		codecBuilder.addTransactionSupport(EntityType.hashLock, {
 			deserialize: parser => {
 				const transaction = {};
-				transaction.mosaicId = parser.uint64();
-				transaction.amount = parser.uint64();
+				transaction.mosaic = parser.uint64();
 				transaction.duration = parser.uint64();
 				transaction.hash = parser.buffer(constants.sizes.hash256);
 				return transaction;
 			},
 
 			serialize: (transaction, serializer) => {
-				serializer.writeUint64(transaction.mosaicId);
-				serializer.writeUint64(transaction.amount);
+				serializer.writeUint64(transaction.mosaic);
 				serializer.writeUint64(transaction.duration);
 				serializer.writeBuffer(transaction.hash);
 			}

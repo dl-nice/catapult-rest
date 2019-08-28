@@ -55,7 +55,7 @@ const namespacePlugin = {
 		});
 
 		builder.addTransactionSupport(EntityType.registerNamespace, {
-			id: ModelType.uint64,
+			namespaceId: ModelType.uint64,
 			parentId: ModelType.uint64,
 			duration: ModelType.uint64,
 			name: ModelType.string
@@ -73,7 +73,7 @@ const namespacePlugin = {
 			alias: { type: ModelType.object, schemaName: entity => getAliasBasicType(entity.type) },
 
 			parentId: ModelType.uint64,
-			ownerPublicKey: ModelType.binary,
+			owner: ModelType.binary,
 			ownerAddress: ModelType.binary,
 
 			startHeight: ModelType.uint64,

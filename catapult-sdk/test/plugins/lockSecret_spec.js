@@ -48,14 +48,13 @@ describe('lock secret plugin', () => {
 			]);
 
 			// - secret lock infos
-			assertSchema(modelSchema['secretLockInfo.lock'], 8,
-				'senderPublicKey', 'senderAddress', 'mosaicId', 'amount', 'endHeight', 'secret', 'recipientAddress', 'compositeHash');
+			assertSchema(modelSchema['secretLockInfo.lock'], 6,
+				'account', 'accountAddress', 'mosaicId', 'height', 'secret', 'recipient');
 
 			// - secret lock transactions
 			const transactionSchemaSize = Object.keys(modelSchema.transaction).length;
-			assertSchema(modelSchema.secretLock, transactionSchemaSize + 5,
-				'mosaicId', 'amount', 'duration', 'secret', 'recipientAddress');
-			assertSchema(modelSchema.secretProof, transactionSchemaSize + 3, 'secret', 'recipientAddress', 'proof');
+			assertSchema(modelSchema.secretLock, transactionSchemaSize + 4, 'mosaicId', 'duration', 'secret', 'recipient');
+			assertSchema(modelSchema.secretProof, transactionSchemaSize + 3, 'secret', 'recipient', 'proof');
 		});
 	});
 
@@ -84,33 +83,31 @@ describe('lock secret plugin', () => {
 		const getCodec = entityType => getCodecs()[entityType];
 
 		describe('supports secret lock', () => {
-			const recipientAddressBuffer = test.random.bytes(test.constants.sizes.addressDecoded);
+			const recipientBuffer = test.random.bytes(test.constants.sizes.addressDecoded);
 			const secretBuffer = test.random.bytes(test.constants.sizes.hash256);
 
-			test.binary.test.addAll(getCodec(EntityType.secretLock), 82, () => ({
+			test.binary.test.addAll(getCodec(EntityType.secretLock), 74, () => ({
 				buffer: Buffer.concat([
-					Buffer.of(0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF), // mosaicId
-					Buffer.of(0xCA, 0xD0, 0x8E, 0x6E, 0xFF, 0x21, 0x2F, 0x49), // amount
+					Buffer.of(0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF), // mosaic
 					Buffer.of(0x99, 0x00, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF), // duration
 					Buffer.of(0xFF), // hash algorithm
 					Buffer.from(secretBuffer), // secret 25b
-					Buffer.from(recipientAddressBuffer) // recipientAddress 32b
+					Buffer.from(recipientBuffer) // recipient 32b
 				]),
 
 				object: {
-					mosaicId: [0x78563412, 0xEFCDAB90],
-					amount: [0x6E8ED0CA, 0x492F21FF],
+					mosaic: [0x78563412, 0xEFCDAB90],
 					duration: [0xBBAA0099, 0xFFEEDDCC],
 					hashAlgorithm: 0xFF,
 					secret: secretBuffer,
-					recipientAddress: recipientAddressBuffer
+					recipient: recipientBuffer
 				}
 			}));
 		});
 
 		describe('supports secret proof', () => {
 			const Secret_Buffer = Buffer.from(test.random.bytes(test.constants.sizes.hash256));
-			const RecipientAddress_Buffer = Buffer.from(test.random.bytes(test.constants.sizes.addressDecoded));
+			const Recipient_Buffer = Buffer.from(test.random.bytes(test.constants.sizes.addressDecoded));
 			const proofBufferSize = 300;
 			const Proof_Buffer = Buffer.from(test.random.bytes(proofBufferSize));
 
@@ -119,7 +116,7 @@ describe('lock secret plugin', () => {
 					buffer: Buffer.concat([
 						Buffer.of(0xFF), // hash algorithm
 						Secret_Buffer, // secret 32b
-						RecipientAddress_Buffer, // recipient 25b
+						Recipient_Buffer, // recipient 25b
 						Buffer.of(0x00, 0x00), // proof size 2b
 						Proof_Buffer // proofBufferSize
 					]),
@@ -127,7 +124,7 @@ describe('lock secret plugin', () => {
 					object: {
 						hashAlgorithm: 0xFF,
 						secret: Secret_Buffer,
-						recipientAddress: RecipientAddress_Buffer,
+						recipient: Recipient_Buffer,
 						proof: Proof_Buffer
 					}
 				};

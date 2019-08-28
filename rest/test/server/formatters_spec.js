@@ -26,11 +26,11 @@ describe('formatters', () => {
 		const formatUint64 = uint64 => (uint64 ? [uint64[0], uint64[1] * 2] : undefined);
 		return formatters.create({
 			[name]: {
-				chainStatistic: {
-					format: chainStatistic => ({
-						height: formatUint64(chainStatistic.height),
-						scoreLow: formatUint64(chainStatistic.scoreLow),
-						scoreHigh: formatUint64(chainStatistic.scoreHigh)
+				chainInfo: {
+					format: chainInfo => ({
+						height: formatUint64(chainInfo.height),
+						scoreLow: formatUint64(chainInfo.scoreLow),
+						scoreHigh: formatUint64(chainInfo.scoreHigh)
 					})
 				}
 			}
@@ -64,7 +64,7 @@ describe('formatters', () => {
 					scoreLow: [112233, 8899],
 					scoreHigh: [4, 3]
 				},
-				type: 'chainStatistic'
+				type: 'chainInfo'
 			};
 
 			// Assert: formatter doubles high part
@@ -78,7 +78,7 @@ describe('formatters', () => {
 					{ height: [1, 2] },
 					{ height: [8, 7] }
 				],
-				type: 'chainStatistic'
+				type: 'chainInfo'
 			};
 
 			// Assert: formatter doubles high part

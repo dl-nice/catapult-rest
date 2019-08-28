@@ -28,7 +28,7 @@ describe('routeResultTypes', () => {
 			account: 'accountWithMetadata',
 			block: 'blockHeaderWithMetadata',
 			transaction: 'transactionWithMetadata',
-			chainStatistic: 'chainStatistic',
+			chainInfo: 'chainInfo',
 			merkleProofInfo: 'merkleProofInfo',
 			receipts: 'receipts',
 			transactionStatus: 'transactionStatus',

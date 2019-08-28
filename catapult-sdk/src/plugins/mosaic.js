@@ -29,7 +29,7 @@ const ModelType = require('../model/ModelType');
 const mosaicPlugin = {
 	registerSchema: builder => {
 		builder.addTransactionSupport(EntityType.mosaicDefinition, {
-			id: ModelType.uint64,
+			mosaicId: ModelType.uint64,
 			duration: ModelType.uint64
 		});
 
@@ -44,18 +44,16 @@ const mosaicPlugin = {
 		});
 
 		builder.addSchema('mosaicDescriptor.mosaic', {
-			id: ModelType.uint64,
+			mosaicId: ModelType.uint64,
 			supply: ModelType.uint64,
 
-			startHeight: ModelType.uint64,
-			ownerPublicKey: ModelType.binary,
-			ownerAddress: ModelType.binary,
-			revision: 'number',
-			properties: { type: ModelType.object, schemaName: 'mosaicDefinition.mosaicProperties' }
+			height: ModelType.uint64,
+			owner: ModelType.binary,
+			properties: { type: ModelType.array, schemaName: 'mosaicDefinition.mosaicProperty' }
 		});
 
-		builder.addSchema('mosaicDefinition.mosaicProperties', {
-			duration: ModelType.uint64
+		builder.addSchema('mosaicDefinition.mosaicProperty', {
+			value: ModelType.uint64
 		});
 	},
 

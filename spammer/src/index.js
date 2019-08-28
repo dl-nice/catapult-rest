@@ -128,10 +128,10 @@ const { uint64 } = catapult.utils;
 		return catapult.crypto.createKeyPairFromPrivateKeyString(catapult.utils.convert.uint8ToHex(privateKey));
 	};
 
-	const createTransfer = (signerPublicKey, recipientAddress, transferId, amount) => {
+	const createTransfer = (signer, recipient, transferId, amount) => {
 		const transfer = transactionFactory.createRandomTransfer(
-			{ signerPublicKey, networkId: Mijin_Test_Network, transferId },
-			() => recipientAddress
+			{ signerPublicKey: signer, networkId: Mijin_Test_Network, transferId },
+			() => recipient
 		);
 
 		transfer.mosaics[0].amount = amount;
